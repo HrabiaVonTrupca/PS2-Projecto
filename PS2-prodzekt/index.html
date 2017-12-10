@@ -70,7 +70,7 @@
                 console.log(message);
             };
             chat.client.getTables = function (message) {
-                for (i = 0; i < message.length; i++) {
+                for (i = 0; i < message.size(); i++) {
                     console.log(message[i]);
                 }
             };
