@@ -17,7 +17,7 @@ namespace PS2_prodzekt
         {
             string userID = Context.ConnectionId;
 
-            Clients.Client(conID).broadcastMessage(message);
+            // Clients.Client(conID).broadcastMessage(message);
 
             Debug.WriteLine("User " + userID + "send message: " + message);
 
@@ -26,7 +26,7 @@ namespace PS2_prodzekt
                 conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
                 conn.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM dbo.Users", conn);
+                SqlCommand command = new SqlCommand(message, conn);
 
                 // command.Parameters.Add(new SqlParameter("0", 1));
 
@@ -39,7 +39,7 @@ namespace PS2_prodzekt
                 {
                     while (reader.Read())
                     {
-                        Clients.Client(conID).broadcastMessage(reader[1]);
+                        Clients.Client(conID).broadcastMessage(reader);
                     }
                 }
 

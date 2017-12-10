@@ -72,6 +72,9 @@
             };
             // Start the connection.
             $.connection.hub.start().done(function () {
+                $(documnet).ready(function() {
+                    chat.server.send('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES',$.connection.hub.id);
+                });
                 $('#select_db').click(function () {
                     // Call the Send method on the hub.
                     chat.server.send('HELLO',$.connection.hub.id);
