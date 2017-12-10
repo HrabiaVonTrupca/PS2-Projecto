@@ -70,11 +70,9 @@
                 console.log(message);
             };
             chat.client.getTables = function (message) {
-                var i = 0;
-                $(message).each(function () {
+                for (i = 0; i < message.length; i++) {
                     console.log(message[i]);
-                    i++;
-                });
+                }
             };
             // Start the connection.
             $.connection.hub.start().done(function () {
