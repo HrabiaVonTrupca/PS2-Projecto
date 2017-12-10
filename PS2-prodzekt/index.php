@@ -71,7 +71,7 @@
             };
             chat.client.getTables = function (message) {
                 // console.log(message);
-                console.log(message[0][0]);
+                console.log(message);
             };
             // Start the connection.
             $.connection.hub.start().done(function () {
