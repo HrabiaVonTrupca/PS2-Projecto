@@ -39,7 +39,7 @@ namespace PS2_prodzekt
                 {
                     while (reader.Read())
                     {
-                        Clients.Client(conID).broadcastMessage(reader);
+                        Clients.Client(conID).broadcastMessage(reader[0]);
                     }
                 }
 
