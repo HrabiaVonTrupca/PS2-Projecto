@@ -87,10 +87,9 @@
 
                 
             });
-                $('#select_db').click(function () {
-                    // Call the Send method on the hub.
-                    chat.server.send('HELLO', $.connection.hub.id);
-                });
+            $('#select_db').click(function () {
+                // Call the Send method on the hub.
+                chat.server.send('HELLO', $.connection.hub.id);
             });
         });
     </script>
