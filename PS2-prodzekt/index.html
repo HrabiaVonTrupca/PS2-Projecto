@@ -61,12 +61,10 @@
                 // Html encode display name and message.
                 //var encodedName = $('<div />').text(name).html();
                 var encodedMsg = $('<div />').text(message).html();
-
-                $.each(message, function (key, value) {
-                    $('#db')
-                        .append($("<option></option>")
-                            .attr("value", key)
-                            .text(value));
+                var i = 0;
+                $.each(message, function () {
+                    console.log(message[i]);
+                    i++
                 });
                 // Add the message to the page.
                 //$('#discussion').append('<li><strong>' + encodedName
