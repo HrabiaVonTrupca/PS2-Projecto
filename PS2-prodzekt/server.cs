@@ -23,7 +23,7 @@ namespace PS2_prodzekt
 
             using (SqlConnection conn = new SqlConnection())
             {
-                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE= PS2FinalProject;USERID=ps2admin;PASSWORD=Maslo2017;";
+                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
                 conn.Open();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM dbo.Users", conn);
