@@ -71,8 +71,11 @@
 
             };
             chat.client.getTables = function (message) {
-                $.each(message, function (index, value) {
-                    console.log(index + ": " + value);
+                $.each(message, function (key, value) {
+                    $('#db').append($('<option>', {
+                                value: key
+                            })
+                            .text(value));
                 });
             };
             // Start the connection.
