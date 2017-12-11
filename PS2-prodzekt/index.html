@@ -78,6 +78,8 @@
                     chat.server.getTablesList(
                         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
                         .hub.id);
+
+                    Cookies.remove('singleTable');
                 });
             });
 
@@ -107,16 +109,16 @@
                     .hub.id);
             });
 
-            $(function () {
-                $("a").click(function (evt) {
-                    var link = $(this).attr("href");
-                    setTimeout(function () {
-                        window.location.href = link;
-                    }, 5000);
-                });
-            });
+            // $(function () {
+            //     $("a").click(function (evt) {
+            //         var link = $(this).attr("href");
+            //         setTimeout(function () {
+            //             window.location.href = link;
+            //         }, 5000);
+            //     });
+            // });
 
-            Cookies.remove('singleTable');
+            
         });
     </script>
 
