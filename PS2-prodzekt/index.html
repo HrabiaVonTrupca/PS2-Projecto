@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <a href="view.html"> 
+                <a href="view.html">
                     <button class="btn btn-primary" id="select_db">Pokaż zawartość tabeli</button>
                 </a>
             </div>
@@ -69,14 +69,15 @@
                 // Add the message to the page.
                 //$('#discussion').append('<li><strong>' + encodedName
                 //    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
-                
+
 
             };
 
             $.connection.hub.start().done(function () {
                 $(document).ready(function () {
-                    chat.server.getTablesList('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
-                       .hub.id);
+                    chat.server.getTablesList(
+                        'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
+                        .hub.id);
                 });
             });
 
@@ -86,23 +87,33 @@
 
                     } else {
                         $('#db').append($('<option>', {
-                                    value: value
-                                })
-                                .text(value));
+                                value: value
+                            })
+                            .text(value));
                     }
                 });
             };
 
             chat.client.singleTableResponse = function (message) {
                 // $.each(message, function (key, value) {
-                    // console.log(value[0]);
-                    // console.log(value[1]);
+                // console.log(value[0]);
+                // console.log(value[1]);
                 // });
                 Cookies.set('singleTable', message);
             };
 
             $('#select_db').click(function () {
-                chat.server.readSingleTable('SELECT * FROM ' + $( "#db option:selected" ).val() + ';', $.connection.hub.id);
+                chat.server.readSingleTable('SELECT * FROM ' + $("#db option:selected").val() + ';', $.connection
+                    .hub.id);
+            });
+
+            $(function () {
+                $("a").click(function (evt) {
+                    var link = $(this).attr("href");
+                    setTimeout(function () {
+                        window.location.href = link;
+                    }, 1000);
+                });
             });
         });
     </script>
