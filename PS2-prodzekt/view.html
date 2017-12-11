@@ -42,6 +42,7 @@
         console.log(Cookies.get('singleTable'));
         $(document).ready(function () {
             var table = jQuery.parseJSON(Cookies.get('singleTable'));
+            console.log(table);
             jQuery.each(table, function (i, val) {
                 jQuery.each(val, function (j, val_j) {
                     $("#tableID").find('tbody')
@@ -50,6 +51,7 @@
                             .text(val_j)
                         )
                     );
+                    console.log(val_j);
                 });
             });
         });
