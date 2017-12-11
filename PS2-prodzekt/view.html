@@ -42,14 +42,14 @@
         $(document).ready(function () {
             var table = jQuery.parseJSON(Cookies.get('singleTable'));
             jQuery.each(table, function (i, val) {
-                jQuery.each(val, function (j, val_j) {
+                for (i = 0; i < val.length; i++) {
                     $(".table").find('tbody')
                     .append($('<tr>')
                         .append($('<td>')
-                            .text(val_j)
+                            .text(val[i])
                         )
                     );
-                });
+                }
             });
         });
     </script>
