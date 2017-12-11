@@ -55,8 +55,9 @@
             });
 
             chat.client.singleTableResponse = function (message) {
-                var table = jQuery.parseJSON(message);
-                jQuery.each(table, function (i, val) {
+                // var table = jQuery.parseJSON(message);
+                console.log(message);
+                jQuery.each(message, function (i, val) {
                     $(".table").find('tbody')
                         .append($('<tr>')
                             .append($('<td>')
