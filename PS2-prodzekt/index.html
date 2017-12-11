@@ -78,6 +78,8 @@
                     chat.server.getTablesList(
                         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
                         .hub.id);
+
+                    Cookies.remove('database');
                 });
             });
 
@@ -99,12 +101,11 @@
                 // console.log(value[0]);
                 // console.log(value[1]);
                 // });
-                Cookies.set('singleTable', message);
+                // Cookies.set('singleTable', message);
             };
 
             $('#select_db').click(function () {
-                chat.server.readSingleTable('SELECT * FROM ' + $("#db option:selected").val() + ';', $.connection
-                    .hub.id);
+                Cookies.set('database', $("#db option:selected").val());
             });
 
             // $(function () {
