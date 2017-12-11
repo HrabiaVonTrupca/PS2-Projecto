@@ -23,7 +23,25 @@
             </div>
         </div>
         <div class="row">
-            
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>john@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>Mary</td>
+                        <td>Moe</td>
+                        <td>mary@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>July</td>
+                        <td>Dooley</td>
+                        <td>july@example.com</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -37,7 +55,16 @@
 
     <script>
         console.log(Cookies.get('singleTable'));
-    
+        $(document).ready(function () {
+            $.each(Cookies.get('singleTable'), function (key, value) {
+                $("#tableID").find('tbody')
+                    .append($('<tr>')
+                        .append($('<td>')
+                            .text(value)
+                        )
+                    );
+            });
+        });
     </script>
 
 </body>
