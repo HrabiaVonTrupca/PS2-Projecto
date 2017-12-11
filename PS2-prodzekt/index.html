@@ -66,8 +66,7 @@
                 // Add the message to the page.
                 //$('#discussion').append('<li><strong>' + encodedName
                 //    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
-
-                console.log(message);
+                
 
             };
 
@@ -92,12 +91,15 @@
             };
 
             chat.client.singleTableResponse = function (message) {
-                console.log(message);
+                $.each(message, function (key, value) {
+                    console.log(key);
+                    console.log(value);
+                });
                 // $.cookie('singleTable', message);
             };
 
             $('#select_db').click(function () {
-                chat.server.readSingleTable('SELECT * FROM ' + $( "#db option:selected" ).val(), $.connection.hub.id);
+                chat.server.readSingleTable('SELECT * FROM ' + $( "#db option:selected" ).val() + ';', $.connection.hub.id);
             });
         });
     </script>
