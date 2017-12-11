@@ -62,7 +62,7 @@
                 //var encodedName = $('<div />').text(name).html();
                 var encodedMsg = $('<div />').text(message).html();
                 var i = 0;
-                
+
                 // Add the message to the page.
                 //$('#discussion').append('<li><strong>' + encodedName
                 //    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
@@ -71,8 +71,9 @@
 
             };
             chat.client.getTables = function (message) {
-                // console.log(message);
-                console.log(message);
+                $.each(message, function (index, value) {
+                    console.log(index + ": " + value);
+                });
             };
             // Start the connection.
             $.connection.hub.start().done(function () {
@@ -82,7 +83,7 @@
                     // $('#id')
                 });
 
-                
+
             });
             $('#select_db').click(function () {
                 chat.server.send('SELECT user_name FROM USERS', $.connection.hub.id);

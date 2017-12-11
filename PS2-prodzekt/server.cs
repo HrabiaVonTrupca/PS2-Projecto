@@ -43,7 +43,7 @@ namespace PS2_prodzekt
                         int reader_size = reader.FieldCount;
                         rows.Add(reader.GetString(0));
                     }
-                    Clients.Client(conID).clientMessage(rows);
+                    Clients.Client(conID).getTables(rows);
                 }
 
                 // Create the command, to insert the data into the Table!
