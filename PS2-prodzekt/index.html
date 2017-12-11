@@ -78,8 +78,6 @@
                     chat.server.getTablesList(
                         'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
                         .hub.id);
-
-                    Cookies.remove('singleTable');
                 });
             });
 
