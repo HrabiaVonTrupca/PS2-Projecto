@@ -56,13 +56,15 @@
     <script>
         console.log(Cookies.get('singleTable'));
         $(document).ready(function () {
-            $.each(Cookies.get('singleTable'), function (key, value) {
-                $("#tableID").find('tbody')
+            jQuery.each(Cookies.get('singleTable'), function (i, val) {
+                jQuery.each(val, function (j, val_j) {
+                    $("#tableID").find('tbody')
                     .append($('<tr>')
                         .append($('<td>')
                             .text(value)
                         )
                     );
+                });
             });
         });
     </script>
