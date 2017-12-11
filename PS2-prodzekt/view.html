@@ -39,19 +39,16 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
     <script>
-        console.log(Cookies.get('singleTable'));
         $(document).ready(function () {
             var table = jQuery.parseJSON(Cookies.get('singleTable'));
-            console.log(table);
             jQuery.each(table, function (i, val) {
                 jQuery.each(val, function (j, val_j) {
-                    $("#tableID").find('tbody')
+                    $(".table").find('tbody')
                     .append($('<tr>')
                         .append($('<td>')
                             .text(val_j)
                         )
                     );
-                    console.log(val_j);
                 });
             });
         });
