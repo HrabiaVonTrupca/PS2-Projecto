@@ -91,11 +91,11 @@
             };
 
             chat.client.singleTableResponse = function (message) {
-                $.each(message, function (key, value) {
-                    console.log(value[0]);
-                    console.log(value[1]);
-                });
-                // $.cookie('singleTable', message);
+                // $.each(message, function (key, value) {
+                    // console.log(value[0]);
+                    // console.log(value[1]);
+                // });
+                $.cookie("singleTable", message);
             };
 
             $('#select_db').click(function () {
