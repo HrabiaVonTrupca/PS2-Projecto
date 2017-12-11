@@ -70,25 +70,29 @@
                 console.log(message);
 
             };
-            chat.client.getTables = function (message) {
-                $.each(message, function (key, value) {
-                    $('#db').append($('<option>', {
-                                value: key
-                            })
-                            .text(value));
-                });
-            };
-            // Start the connection.
+
             $.connection.hub.start().done(function () {
                 $(document).ready(function () {
                     chat.server.send('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
                        .hub.id);
                 });
-
-
             });
+
+            chat.client.getTables = function (message) {
+                $.each(message, function (key, value) {
+                    if (key == 0) {
+
+                    } else {
+                        $('#db').append($('<option>', {
+                                    value: value
+                                })
+                                .text(value));
+                    }
+                });
+            };
+
             $('#select_db').click(function () {
-                // chat.server.send('SELECT user_name FROM USERS', $.connection.hub.id);
+                chat.server.send('SELECT * FROM' + $( "#db option:selected" ).text(), $.connection.hub.id);
             });
         });
     </script>
