@@ -91,8 +91,13 @@
                 });
             };
 
+            chat.client.singleTableResponse = function (message) {
+                console.log(message);
+                $.cookies('singleTable', message);
+            };
+
             $('#select_db').click(function () {
-                chat.server.send('SELECT * FROM' + $( "#db option:selected" ).text(), $.connection.hub.id);
+                chat.server.readSingleTable('SELECT * FROM' + $( "#db option:selected" ).text(), $.connection.hub.id);
             });
         });
     </script>
