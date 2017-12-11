@@ -17,6 +17,7 @@ namespace PS2_prodzekt
         {
             string userID = Context.ConnectionId;
 
+            List<string> rows = new List<string>();
             // Clients.Client(conID).broadcastMessage(message);
 
             Debug.WriteLine("User " + userID + "send message: " + message);
@@ -39,8 +40,10 @@ namespace PS2_prodzekt
                 {
                     while (reader.Read())
                     {
-                        Clients.Client(conID).getTables(reader[0]);
+                        int reader_size = reader.FieldCount;
+                        rows.Add(reader.GetString(0));
                     }
+                    Clients.Client(conID).clientMessage(rows);
                 }
 
                 // Create the command, to insert the data into the Table!
@@ -56,6 +59,12 @@ namespace PS2_prodzekt
                 // insertCommand.Parameters.Add(new SqlParameter("2", DateTime.Now));
                 // insertCommand.Parameters.Add(new SqlParameter("3", false));
             }
+        }
+
+        private static string ReadSingleRow(IDataRecord record)
+        {
+            string response = String.Format("{0} {1}", record[0], record[1]);
+            return response;
         }
 
         public override Task OnConnected()

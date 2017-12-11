@@ -57,7 +57,7 @@
             // Declare a proxy to reference the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call to broadcast messages.
-            chat.client.broadcastMessage = function (message) {
+            chat.client.clientMessage = function (message) {
                 // Html encode display name and message.
                 //var encodedName = $('<div />').text(name).html();
                 var encodedMsg = $('<div />').text(message).html();
@@ -68,6 +68,7 @@
                 //    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
 
                 console.log(message);
+
             };
             chat.client.getTables = function (message) {
                 // console.log(message);
@@ -76,16 +77,15 @@
             // Start the connection.
             $.connection.hub.start().done(function () {
                 $(document).ready(function () {
-                    chat.server.send('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
-                        .hub.id);
+                    //chat.server.send('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES', $.connection
+                    //    .hub.id);
                     // $('#id')
                 });
 
                 
             });
             $('#select_db').click(function () {
-                // Call the Send method on the hub.
-                chat.server.send('HELLO', $.connection.hub.id);
+                chat.server.send('SELECT user_name FROM USERS', $.connection.hub.id);
             });
         });
     </script>
