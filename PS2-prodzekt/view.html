@@ -43,11 +43,11 @@
             var table = jQuery.parseJSON(Cookies.get('singleTable'));
             jQuery.each(table, function (i, val) {
                 $(".table").find('tbody')
-                    .append($('<tr>')
-                        .append($('<td>')
-                            .text(val[i])
-                        )
-                    );
+                .append($('<tr>')
+                    .append($('<td>')
+                        .text(val)
+                    )
+                );
             });
         });
     </script>
