@@ -55,9 +55,11 @@
 
             chat.client.singleTableResponse = function (message) {
                 // var table = jQuery.parseJSON(message);
+                var table = JSON.stringify(message);
+                console.log(table);
                 $(document).ready(function () {
                     $('.table').DataTable({
-                        data: message
+                        data: table
                     });
                 });
                 // console.log(message);
