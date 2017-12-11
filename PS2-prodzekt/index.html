@@ -93,11 +93,11 @@
 
             chat.client.singleTableResponse = function (message) {
                 console.log(message);
-                $.cookie('singleTable', message);
+                // $.cookie('singleTable', message);
             };
 
             $('#select_db').click(function () {
-                chat.server.readSingleTable('SELECT * FROM' + $( "#db option:selected" ).text(), $.connection.hub.id);
+                chat.server.readSingleTable("SELECT * FROM " + $( "#db option:selected" ).text() + '"', $.connection.hub.id);
             });
         });
     </script>
