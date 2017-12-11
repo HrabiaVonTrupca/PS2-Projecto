@@ -13,14 +13,10 @@ namespace PS2_prodzekt
 {
     public class ChatHub : Hub
     {
-        public void Send(string message, string conID)
+
+        private static List<object[]> getQuery(string message)
         {
-            string userID = Context.ConnectionId;
-
-            List<string> rows = new List<string>();
-            // Clients.Client(conID).broadcastMessage(message);
-
-            Debug.WriteLine("User " + userID + "send message: " + message);
+            List<object[]> rows = new List<object[]>();
 
             using (SqlConnection conn = new SqlConnection())
             {
@@ -40,10 +36,15 @@ namespace PS2_prodzekt
                 {
                     while (reader.Read())
                     {
-                        int reader_size = reader.FieldCount;
-                        rows.Add(reader.GetString(0));
+                        object[] temp = new object[reader.FieldCount];
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            temp[i] = reader[i];
+                        }
+                        rows.Add(temp);
+
                     }
-                    Clients.Client(conID).getTables(rows);
                 }
 
                 // Create the command, to insert the data into the Table!
@@ -59,12 +60,51 @@ namespace PS2_prodzekt
                 // insertCommand.Parameters.Add(new SqlParameter("2", DateTime.Now));
                 // insertCommand.Parameters.Add(new SqlParameter("3", false));
             }
+            return rows;
         }
+
+        public void ReadSingleTable(string message, string conID)
+        {
+            List<object[]> response = getQuery(message);
+            Clients.Client(conID).singleTableResponse(response);
+        }
+
+        public void getTablesList(string message, string conID)
+        {
+            List<object[]> response = getQuery(message);
+            Clients.Client(conID).getTables(response);
+        }
+
+        public void sendQuery(string message, string conID)
+        {
+            List<object[]> response = getQuery(message);
+            Clients.Client(conID).getTables(response);
+        }
+
+
+        private void Send(string message, string conID)
+        {
+            string userID = Context.ConnectionId;
+
+            // Clients.Client(conID).broadcastMessage(message);
+
+            Debug.WriteLine("User " + userID + "send message: " + message);
+
+
+        }
+
+
 
         private static string ReadSingleRow(IDataRecord record)
         {
             string response = String.Format("{0} {1}", record[0], record[1]);
             return response;
+        }
+
+        public void forceRefresh()
+        {
+            string message = "REFRESH";
+            Clients.All.refresh(message);
         }
 
         public override Task OnConnected()
