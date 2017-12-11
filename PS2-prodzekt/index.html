@@ -97,7 +97,8 @@
             };
 
             $('#select_db').click(function () {
-                var query = 'SELECT * FROM ' + $( "#db option:selected" ).text();
+                var query = "SELECT * FROM "
+                query = query.concat($( "#db option:selected" ).text());
                 chat.server.readSingleTable(query, $.connection.hub.id);
             });
         });
