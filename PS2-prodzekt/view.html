@@ -41,7 +41,8 @@
     <script>
         console.log(Cookies.get('singleTable'));
         $(document).ready(function () {
-            jQuery.each(Cookies.get('singleTable'), function (i, val) {
+            var table = jQuery.parseJSON(Cookies.get('singleTable'));
+            jQuery.each(table, function (i, val) {
                 jQuery.each(val, function (j, val_j) {
                     $("#tableID").find('tbody')
                     .append($('<tr>')
