@@ -27,6 +27,9 @@
             <table class="table"></table>
         </div>
         <div class="row">
+            <div class="col-xs-12" id="error"></div>
+        </div>
+        <div class="row">
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="insert1">
             </div>
@@ -94,13 +97,35 @@
                     $('.table').DataTable({
                         data: table,
                         columns: [
-                            {title: 'siema'},
-                            {title: 'witam'},
-                            {title: 'title'}
+                            {title: ''},
+                            {title: ''},
+                            {title: ''}
                         ]
                     });
                 });
             };
+
+            $('#insert_button').click(function () {
+                var param1 = $('#insert1').val();
+                var param2 = $('#insert2').val();
+                chat.server.insertRow($.connection.hub.id, Cookies.get('database'), param1, param2);
+            });
+
+            $('#remove_button').click(function () {
+                var remove = $('#remove').val();
+                chat.server.deleteRow($.connection.hub.id, Cookies.get('database'), param1);
+            });
+            
+            $('#edit_button').click(function () {
+                var id = $('#id').val();
+                var edit1 = $('#edit1').val();
+                var edit2 = $('#edit2').val();
+                chat.server.editRow($.connection.hub.id, Cookies.get('database'), param1, param2);
+            });
+
+            chat.client.clientMessage = function (message) {
+                $('#error').text(message);
+            }
         });
     </script>
 

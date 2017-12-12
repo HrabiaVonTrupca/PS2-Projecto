@@ -9,3 +9,8 @@ input {
 .row {
     padding: 10px;
 }
+
+#error {
+    color: #fff;
+    background-color: red;
+}
