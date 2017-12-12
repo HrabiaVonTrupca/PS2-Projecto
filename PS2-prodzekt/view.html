@@ -89,11 +89,6 @@
             chat.client.singleTableResponse = function (message) {
                 // var table = jQuery.parseJSON(message);
                 var table = JSON.stringify(message);
-                table = [
-                    ['siema','witam'],
-                    ['siema','witam'],
-                    ['siema','witam']
-                ];
                 $(document).ready(function () {
                     $('.table').DataTable({
                         data: table,
