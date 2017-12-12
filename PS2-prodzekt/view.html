@@ -88,8 +88,10 @@
 
             chat.client.singleTableResponse = function (message) {
                 // var table = jQuery.parseJSON(message);
-                var table = JSON.parse(message);
-                console.log(table);
+                // var table = JSON.parse(message);
+                var table = $.map(message, function(value, index) {
+                    return [value];
+                })
                 $(document).ready(function () {
                     $('.table').DataTable({
                         data: table,
