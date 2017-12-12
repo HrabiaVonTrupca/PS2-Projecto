@@ -51,7 +51,7 @@
             $.connection.hub.start().done(function () {
 
                 $(document).ready(function () {
-                    chat.server.executeUserCommand(Cookies.get('query'), $.connection.hub.id);
+                    chat.server.executeUserCommand($.connection.hub.id, Cookies.get('query'));
                 });
             });
 
@@ -60,7 +60,14 @@
                     return [value];
                 })
                 $(document).ready(function () {
-                    if (table[0].length == 2) {
+                    if (table[0].length == 1) {
+                        $('.table').DataTable({
+                            data: table,
+                            columns: [
+                                {title: ''}
+                            ]
+                        });
+                    } else if (table[0].length == 2) {
                         $('.table').DataTable({
                             data: table,
                             columns: [
@@ -68,7 +75,7 @@
                                 {title: ''}
                             ]
                         });
-                    } else {
+                    } else if (table[0].length == 3) {
                         $('.table').DataTable({
                             data: table,
                             columns: [
