@@ -24,6 +24,9 @@
             </div>
         </div>
         <div class="row">
+            <a href="/index.html" class="btn btn-default">Wstecz</a>
+        </div>
+        <div class="row">
             <table class="table"></table>
         </div>
         <div class="row">
@@ -94,14 +97,24 @@
                     return [value];
                 })
                 $(document).ready(function () {
-                    $('.table').DataTable({
-                        data: table,
-                        columns: [
-                            {title: ''},
-                            {title: ''},
-                            {title: ''}
-                        ]
-                    });
+                    if (Cookies.get('database') == 'Users') {
+                        $('.table').DataTable({
+                            data: table,
+                            columns: [
+                                {title: ''},
+                                {title: ''}
+                            ]
+                        });
+                    } else {
+                        $('.table').DataTable({
+                            data: table,
+                            columns: [
+                                {title: ''},
+                                {title: ''},
+                                {title: ''}
+                            ]
+                        });
+                    }
                 });
             };
 
@@ -125,7 +138,9 @@
 
             chat.client.clientMessage = function (message) {
                 $('#error').text(message);
+                $('#error').css('display', 'inline-block');
             }
+            
             chat.client.refresh = function () {
                 window.location.reload();
             }

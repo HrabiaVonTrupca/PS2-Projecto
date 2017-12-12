@@ -11,6 +11,7 @@ input {
 }
 
 #error {
+    display: none;
     color: #fff;
     background-color: red;
 }
