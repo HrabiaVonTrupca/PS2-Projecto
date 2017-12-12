@@ -31,10 +31,10 @@
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="insert1">
+                <input type="text" class="form-control" id="insert1" placeholder="Kolumna 1">
             </div>
             <div class="col-sm-4">    
-                <input type="text" class="form-control" id="insert2">
+                <input type="text" class="form-control" id="insert2" placeholder="Kolumna 2">
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-success" id="insert_button">Dodaj</button>
@@ -50,13 +50,13 @@
         </div>
         <div class="row">
             <div class="col-sm-1">    
-                <input type="text" class="form-control" id="id">
+                <input type="text" class="form-control" id="id" placeholder="ID">
             </div>
             <div class="col-sm-4">    
-                <input type="text" class="form-control" id="edit1">
+                <input type="text" class="form-control" id="edit1" placeholder="Kolumna 1">
             </div>
             <div class="col-sm-3">    
-                <input type="text" class="form-control" id="edit2">
+                <input type="text" class="form-control" id="edit2" placeholder="Kolumna 2">
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-primary" id="edit_button">Edytuj</button>
@@ -125,6 +125,9 @@
 
             chat.client.clientMessage = function (message) {
                 $('#error').text(message);
+            }
+            chat.client.refresh = function () {
+                window.location.reload();
             }
         });
     </script>
