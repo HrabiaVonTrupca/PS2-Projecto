@@ -87,8 +87,6 @@
             });
 
             chat.client.singleTableResponse = function (message) {
-                // var table = jQuery.parseJSON(message);
-                // var table = JSON.parse(message);
                 var table = $.map(message, function(value, index) {
                     return [value];
                 })
@@ -97,19 +95,11 @@
                         data: table,
                         columns: [
                             {title: 'siema'},
-                            {title: 'witam'}
+                            {title: 'witam'},
+                            {title: 'title'}
                         ]
                     });
                 });
-                // console.log(message);
-                // jQuery.each(message, function (i, val) {
-                //     $(".table").find('tbody')
-                //         .append($('<tr>')
-                //             .append($('<td>')
-                //                 .text(val)
-                //             )
-                //         );
-                // });
             };
         });
     </script>
