@@ -1,5 +1,9 @@
-button {
+.btn {
     width: 100%;
+}
+
+input {
+    text-align: center;
 }
 
 .row {
