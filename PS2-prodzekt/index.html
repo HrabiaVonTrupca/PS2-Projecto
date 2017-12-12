@@ -42,7 +42,9 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <button class="btn btn-primary" id="select_db">Wyślij zapytanie</button>
+                <a href="view2.html">
+                    <button class="btn btn-primary" id="query_db">Wyślij zapytanie</button>
+                </a>
             </div>
         </div>
     </div>
@@ -57,21 +59,7 @@
 
     <script type="text/javascript">
         $(function () {
-            // Declare a proxy to reference the hub.
             var chat = $.connection.chatHub;
-            // Create a function that the hub can call to broadcast messages.
-            chat.client.clientMessage = function (message) {
-                // Html encode display name and message.
-                //var encodedName = $('<div />').text(name).html();
-                var encodedMsg = $('<div />').text(message).html();
-                var i = 0;
-
-                // Add the message to the page.
-                //$('#discussion').append('<li><strong>' + encodedName
-                //    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
-
-
-            };
 
             $.connection.hub.start().done(function () {
                 $(document).ready(function () {
@@ -96,28 +84,13 @@
                 });
             };
 
-            chat.client.singleTableResponse = function (message) {
-                // $.each(message, function (key, value) {
-                // console.log(value[0]);
-                // console.log(value[1]);
-                // });
-                // Cookies.set('singleTable', message);
-            };
-
             $('#select_db').click(function () {
                 Cookies.set('database', $("#db option:selected").val());
             });
 
-            // $(function () {
-            //     $("a").click(function (evt) {
-            //         var link = $(this).attr("href");
-            //         setTimeout(function () {
-            //             window.location.href = link;
-            //         }, 5000);
-            //     });
-            // });
-
-            
+            $('#query_db').click(function () {
+                Cookies.set('query', $("#query").val());
+            });
         });
     </script>
 
