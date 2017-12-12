@@ -112,15 +112,15 @@
             });
 
             $('#remove_button').click(function () {
-                var remove = $('#remove').val();
+                var param1 = $('#remove').val();
                 chat.server.deleteRow($.connection.hub.id, Cookies.get('database'), param1);
             });
             
             $('#edit_button').click(function () {
-                var id = $('#id').val();
-                var edit1 = $('#edit1').val();
-                var edit2 = $('#edit2').val();
-                chat.server.editRow($.connection.hub.id, Cookies.get('database'), param1, param2);
+                var param1 = $('#id').val();
+                var param2 = $('#edit1').val();
+                var param3 = $('#edit2').val();
+                chat.server.editRow($.connection.hub.id, Cookies.get('database'), param1, param2, param3);
             });
 
             chat.client.clientMessage = function (message) {
