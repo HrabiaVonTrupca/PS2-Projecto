@@ -21,16 +21,13 @@ namespace PS2_prodzekt
             using (SqlConnection conn = new SqlConnection())
             {
                 conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
+                
                 conn.Open();
 
                 SqlCommand command = new SqlCommand(message, conn);
-
-                // command.Parameters.Add(new SqlParameter("0", 1));
-
-                /* Get the rows and display on the screen! 
-                 * This section of the code has the basic code
-                 * that will display the content from the Database Table
-                 * on the screen using an SqlDataReader. */
+                
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -43,30 +40,19 @@ namespace PS2_prodzekt
                             temp[i] = reader[i];
                         }
                         rows.Add(temp);
-
                     }
                 }
-
-                // Create the command, to insert the data into the Table!
-                // this is a simple INSERT INTO command!
-
-                // SqlCommand insertCommand = new SqlCommand("INSERT INTO TableName (FirstColumn, SecondColumn, ThirdColumn, ForthColumn) VALUES (@0, @1, @2, @3)", conn);
-
-                // In the command, there are some parameters denoted by @, you can 
-                // change their value on a condition, in my code they're hardcoded.
-
-                // insertCommand.Parameters.Add(new SqlParameter("0", 10));
-                // insertCommand.Parameters.Add(new SqlParameter("1", "Test Column"));
-                // insertCommand.Parameters.Add(new SqlParameter("2", DateTime.Now));
-                // insertCommand.Parameters.Add(new SqlParameter("3", false));
             }
             return rows;
         }
 
-        public void ReadSingleTable(string message, string conID)
+
+        public override Task OnConnected()
         {
-            List<object[]> response = getQuery(message);
-            Clients.Client(conID).singleTableResponse(response);
+            var name = Context.ConnectionId;
+            Debug.WriteLine(name.ToString() + "  connected");
+
+            return base.OnConnected();
         }
 
         public void getTablesList(string message, string conID)
@@ -75,44 +61,156 @@ namespace PS2_prodzekt
             Clients.Client(conID).getTables(response);
         }
 
+        public void ReadSingleTable(string message, string conID)
+        {
+            List<object[]> response = getQuery(message);
+            Clients.Client(conID).singleTableResponse(response);
+        }
+
+        
         public void sendQuery(string message, string conID)
         {
             List<object[]> response = getQuery(message);
             Clients.Client(conID).getTables(response);
         }
 
-
-        private void Send(string message, string conID)
+        public static void db_OnChange()
         {
-            string userID = Context.ConnectionId;
-
-            // Clients.Client(conID).broadcastMessage(message);
-
-            Debug.WriteLine("User " + userID + "send message: " + message);
-
-
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            context.Clients.All.refresh();
         }
 
 
 
-        private static string ReadSingleRow(IDataRecord record)
-        {
-            string response = String.Format("{0} {1}", record[0], record[1]);
-            return response;
+
+        public void insertRow(string userID, string tableName, string param1, string param2 = null ) {
+
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
+
+                conn.Open();
+
+                SqlCommand command = null;
+
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                switch (tableName)
+                {
+                    case "Users":
+                        command = new SqlCommand("INSERT INTO Users (user_name) VALUES (@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        break;
+
+                    case "Products":
+                        command = new SqlCommand("INSERT INTO Products (product_name, price) VALUES (@0, @1)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        command.Parameters.Add(new SqlParameter("1", param2));
+
+                        break;
+
+                    case "Cart":
+                        command = new SqlCommand("INSERT INTO Cart (user_id, product_id) VALUES (@0, @1)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        command.Parameters.Add(new SqlParameter("1", param2));
+                        break;
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result < 0)
+                    Clients.Client(userID).clientMessage("Error inserting data into Database!");
+            }
+
+            db_OnChange();
         }
 
-        public void forceRefresh()
+        public void deleteRow(string userID, string tableName, string param1=null)
         {
-            string message = "REFRESH";
-            Clients.All.refresh(message);
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
+
+                conn.Open();
+
+                SqlCommand command = null;
+
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                switch (tableName)
+                {
+                    case "Users":
+                        command = new SqlCommand("DELETE FROM Users WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        break;
+
+                    case "Products":
+                        command = new SqlCommand("DELETE FROM Products WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+
+                        break;
+
+                    case "Cart":
+                        command = new SqlCommand("DELETE FROM Cart WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        break;
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result < 0)
+                    Clients.Client(userID).clientMessage("Error during deleting data into Database!");
+            }
+
+            db_OnChange();
         }
 
-        public override Task OnConnected()
+        public void editRow(string userID, string tableName, string param1 = null, string param2 = null, string param3 = null)
         {
-            var name = Context.ConnectionId;
-            Debug.WriteLine(name.ToString() + "  connected");
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
 
-            return base.OnConnected();
+                conn.Open();
+
+                SqlCommand command = null;
+
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                switch (tableName)
+                {
+                    case "Users":
+                        command = new SqlCommand("UPDATE Users SET user_name=(@1) WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        command.Parameters.Add(new SqlParameter("1", param2));
+                        break;
+
+                    case "Products":
+                        command = new SqlCommand("UPDATE Products SET product_name=(@1), price=(@2) WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        command.Parameters.Add(new SqlParameter("1", param2));
+                        command.Parameters.Add(new SqlParameter("2", param3));
+
+                        break;
+
+                    case "Cart":
+                        command = new SqlCommand("UPDATE Cart SET user_id=(@1), product_id(@2) WHERE id=(@0)", conn);
+                        command.Parameters.Add(new SqlParameter("0", param1));
+                        command.Parameters.Add(new SqlParameter("1", param2));
+                        command.Parameters.Add(new SqlParameter("2", param3));
+                        break;
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result < 0)
+                    Clients.Client(userID).clientMessage("Error during updating data into Database!");
+            }
+
+            db_OnChange();
         }
     }
 }
