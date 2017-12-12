@@ -96,7 +96,11 @@
                 ];
                 $(document).ready(function () {
                     $('.table').DataTable({
-                        data: table
+                        data: table,
+                        columns: [
+                            {title: 'siema'},
+                            {title: 'witam'}
+                        ]
                     });
                 });
                 // console.log(message);
