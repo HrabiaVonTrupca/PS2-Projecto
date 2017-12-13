@@ -105,28 +105,17 @@ namespace PS2_prodzekt
                 if (query.Contains("SELECT"))
                 {
                     List<object[]> response = getQuery(query);
-                    if (response.Count > 0)
-                    {
-                        Debug.WriteLine(response);
-                        Clients.Client(userID).userCommandResponse(response);
-                    }
-                    else
-                    {
-                        Clients.Client(userID).clientMessage("Error!");
-                    }
+
+                    Debug.WriteLine(response);
+                    Clients.Client(userID).userCommandResponse(response);
                 }
                 else {
                     SqlCommand command = new SqlCommand(query);
                     int result = -1;
 
-                    try
-                    {
-                        result = command.ExecuteNonQuery();
-                    }
-                    catch (Exception e)
-                    {
-                        Clients.Client(userID).clientMessage("Error!");
-                    }
+                    result = command.ExecuteNonQuery();
+
+                    Clients.Client(userID).clientMessage("Error!");
                 }
             }
         }
