@@ -29,8 +29,7 @@ namespace PS2_prodzekt
                 if (conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                try
-                {
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -44,12 +43,6 @@ namespace PS2_prodzekt
                             rows.Add(temp);
                         }
                     }
-                }
-                catch(Exception e)
-                {
-                    rows.Clear();
-                    return rows;
-                }
             }
             return rows;
         }
