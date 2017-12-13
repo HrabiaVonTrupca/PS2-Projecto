@@ -95,7 +95,7 @@ namespace PS2_prodzekt
                 if (conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                if (query.Contains("SELECT"))
+                if (query.Contains("select"))
                 {
                     List<object[]> response = getQuery(query);
 
