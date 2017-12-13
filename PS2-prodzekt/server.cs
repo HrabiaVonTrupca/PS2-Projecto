@@ -29,18 +29,26 @@ namespace PS2_prodzekt
                 if (conn.State == ConnectionState.Closed)
                     conn.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                try
                 {
-                    while (reader.Read())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        object[] temp = new object[reader.FieldCount];
-
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        while (reader.Read())
                         {
-                            temp[i] = reader[i];
+                            object[] temp = new object[reader.FieldCount];
+
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                temp[i] = reader[i];
+                            }
+                            rows.Add(temp);
                         }
-                        rows.Add(temp);
                     }
+                }
+                catch(Exception e)
+                {
+                    rows.Clear();
+                    return rows;
                 }
             }
             return rows;
@@ -80,10 +88,53 @@ namespace PS2_prodzekt
             context.Clients.All.refresh();
         }
 
+        public void executeUserCommand(string userID, string query)
+        {
 
+            Debug.WriteLine(query);
+
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
+
+                conn.Open();
+
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                if (query.Contains("SELECT"))
+                {
+                    List<object[]> response = getQuery(query);
+                    if (response.Count > 0)
+                    {
+                        Debug.WriteLine(response);
+                        Clients.Client(userID).userCommandResponse(response);
+                    }
+                    else
+                    {
+                        Clients.Client(userID).clientMessage("Error!");
+                    }
+                }
+                else {
+                    SqlCommand command = new SqlCommand(query);
+                    int result = -1;
+
+                    try
+                    {
+                        result = command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        Clients.Client(userID).clientMessage("Error!");
+                    }
+                }
+            }
+        }
 
 
         public void insertRow(string userID, string tableName, string param1, string param2 = null ) {
+
+            bool refreshFlag = false;
 
             using (SqlConnection conn = new SqlConnection())
             {
@@ -117,17 +168,34 @@ namespace PS2_prodzekt
                         break;
                 }
 
-                int result = command.ExecuteNonQuery();
+                int result = -1;
 
-                if (result < 0)
+                try
+                {
+                    if (param1 == "")
+                        throw new Exception();
+                    result = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Clients.Client(userID).clientMessage("Error inserting  data into Database!");
+                    refreshFlag = true;
+                }
+
+                if (result < 0) {
                     Clients.Client(userID).clientMessage("Error inserting data into Database!");
+                    refreshFlag = true;
+                }
             }
 
-            db_OnChange();
+            if (!refreshFlag)
+                db_OnChange();
         }
 
         public void deleteRow(string userID, string tableName, string param1=null)
         {
+            bool refreshFlag = false;
+
             using (SqlConnection conn = new SqlConnection())
             {
                 conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
@@ -158,17 +226,36 @@ namespace PS2_prodzekt
                         break;
                 }
 
-                int result = command.ExecuteNonQuery();
+                int result = -1;
+
+                try
+                {
+                    if (param1 == "")
+                        throw new Exception();
+                    result = command.ExecuteNonQuery();
+
+                }
+                catch(Exception e)
+                {
+                    Clients.Client(userID).clientMessage("Error during deleting data into Database!");
+                    refreshFlag = true;
+                }
 
                 if (result < 0)
+                {
                     Clients.Client(userID).clientMessage("Error during deleting data into Database!");
+                    refreshFlag = true;
+                }
             }
 
-            db_OnChange();
+            if (!refreshFlag)
+                db_OnChange();
         }
 
         public void editRow(string userID, string tableName, string param1 = null, string param2 = null, string param3 = null)
         {
+            bool refreshFlag = false;
+
             using (SqlConnection conn = new SqlConnection())
             {
                 conn.ConnectionString = "SERVER=ps2serwer.database.windows.net;DATABASE=PS2FinalProject;USER ID=ps2admin;PASSWORD=Maslo2017;";
@@ -204,13 +291,31 @@ namespace PS2_prodzekt
                         break;
                 }
 
-                int result = command.ExecuteNonQuery();
+                int result = -1;
+
+                try
+                {
+                    if (param1 == "" || param2 == "")
+                        throw new Exception();
+                    result = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Clients.Client(userID).clientMessage("Error during updating data into Database!");
+                    refreshFlag = true;
+                    
+                }
 
                 if (result < 0)
+                {
                     Clients.Client(userID).clientMessage("Error during updating data into Database!");
+                    refreshFlag = true;
+                }
+
             }
 
-            db_OnChange();
+            if (!refreshFlag)
+                db_OnChange();
         }
     }
 }

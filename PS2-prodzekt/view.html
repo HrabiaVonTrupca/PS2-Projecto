@@ -96,6 +96,7 @@
                 var table = $.map(message, function(value, index) {
                     return [value];
                 })
+                console.log(table);
                 $(document).ready(function () {
                     if (Cookies.get('database') == 'Users') {
                         $('.table').DataTable({
